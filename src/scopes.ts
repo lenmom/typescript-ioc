@@ -16,6 +16,15 @@ export class LocalScope extends Scope {
 export class SingletonScope extends Scope {
     private static instances: Map<Function, any> = new Map<Function, any>();
 
+    /**
+     * Resolves the function by creating a singleton instance if it doesn't exist,
+     * or retrieving the existing instance if it does.
+     *
+     * @param {ObjectFactory} factory - The factory used to create the instance.
+     * @param {Function} source - The function to be resolved.
+     * @param {BuildContext} context - The build context.
+     * @return {any} The resolved instance.
+     */
     public resolve(factory: ObjectFactory, source: Function, context: BuildContext) {
         let instance: any = SingletonScope.instances.get(source);
         if (!instance) {
@@ -39,11 +48,26 @@ export class SingletonScope extends Scope {
 }
 
 export class RequestScope extends Scope {
+    
+/**
+ * Resolves the given function using the provided factory, source, and context.
+ *
+ * @param {ObjectFactory} factory - The object factory used for resolution.
+ * @param {Function} source - The function to resolve.
+ * @param {BuildContext} context - The build context.
+ * @return {any} - The resolved value.
+ */
     public resolve(factory: ObjectFactory, source: Function, context: BuildContext) {
         this.ensureContext(context);
         return context.build(source, factory);
     }
 
+    /**
+     * Ensures the presence of a valid context.
+     *
+     * @param {BuildContext} context - The build context.
+     * @throws {TypeError} If the context is missing.
+     */
     private ensureContext(context: BuildContext) {
         if (!context) {
             throw new TypeError('IoC Container can not handle this request. When using @InRequestScope ' +

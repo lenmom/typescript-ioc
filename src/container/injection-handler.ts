@@ -57,6 +57,12 @@ export class InjectorHandler {
         }
     }
 
+    /**
+     * Check the validity of a name.
+     *
+     * @param {string} source - The name to be checked.
+     * @throws {TypeError} If the name is not defined.
+     */
     public static checkName(source: string) {
         if (!source) {
             throw new TypeError('Invalid name requested to IoC ' +
@@ -72,7 +78,18 @@ export class InjectorHandler {
         delete target[BUILD_CONTEXT_KEY];
     }
 
-    public static injectProperty(target: Function, key: string, propertyType: Function, instanceFactory: InstanceFactory) {
+    /**
+     * Injects a property into the target class prototype.
+     *
+     * @param {Function} target - The target class.
+     * @param {string} key - The name of the property.
+     * @param {Function} propertyType - The type of the property.
+     * @param {InstanceFactory} instanceFactory - The factory function to create instances.
+     */
+    public static injectProperty(target: Function, 
+                                 key: string, 
+                                 propertyType: Function, 
+                                 instanceFactory: InstanceFactory) {
         const propKey = `__${key}`;
         Object.defineProperty(target.prototype, key, {
             enumerable: true,
@@ -86,7 +103,18 @@ export class InjectorHandler {
         });
     }
 
-    public static injectValueProperty(target: Function, key: string, name: string, valueFactory: ValueFactory) {
+    /**
+     * Injects a value property into the target class prototype.
+     *
+     * @param {Function} target - The target class
+     * @param {string} key - The property key
+     * @param {string} name - The name of the value
+     * @param {ValueFactory} valueFactory - The factory function to create the value
+     */
+    public static injectValueProperty(target: Function, 
+                                      key: string, 
+                                      name: string, 
+                                      valueFactory: ValueFactory) {
         const propKey = `__${key}`;
         Object.defineProperty(target.prototype, key, {
             enumerable: true,
